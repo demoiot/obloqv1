@@ -409,15 +409,15 @@ namespace Obloq {
     //% receive.fieldEditor="gridpicker" receive.fieldOptions.columns=3
     //% send.fieldEditor="gridpicker" send.fieldOptions.columns=3
     //% blockId=Obloq_http_setup
-    //% block="Obloq setup http | Pin set: | receiving data (green wire): %receive| sending data (blue wire): %send | Wi-Fi: | name: %SSID| password: %PASSWORD| http config: | ip: %IP| port: %PORT | start connection"
+    //% block="Obloq WiFi Setup | Pin set: | receiving data (green wire): %receive| sending data (blue wire): %send | Wi-Fi: | SSID: %SSID| password: %PASSWORD| start connection"
     export function Obloq_http_setup(/*serial*/receive: SerialPin, send: SerialPin,
-                                     /*wifi*/SSID: string, PASSWORD: string,
-                                     /*mqtt*/IP: string, PORT: number):
+                                     /*wifi*/SSID: string, PASSWORD: string)://,
+                                     ///*mqtt*/IP: string, PORT: number):
         void {
         OBLOQ_WIFI_SSID = SSID
         OBLOQ_WIFI_PASSWORD = PASSWORD
-        OBLOQ_HTTP_IP = IP
-        OBLOQ_HTTP_PORT = PORT
+        //OBLOQ_HTTP_IP = IP
+        //OBLOQ_HTTP_PORT = PORT
         OBLOQ_SERIAL_TX = send
         OBLOQ_SERIAL_RX = receive
         Obloq_serial_init()
@@ -907,17 +907,17 @@ namespace Obloq {
     //% blockId=Obloq_http_get
     //% block="http(get) | url %url| timeout(ms) %time"
     //% advanced=false
-    export function Obloq_http_get(url: string, time: number): string {
+    export function Obloq_http_get(url: string, time: number): void {
         while (OBLOQ_WORKING_MODE_IS_STOP) { basic.pause(20) }
         if (!OBLOQ_HTTP_INIT)
-            return OBLOQ_STR_TYPE_IS_NONE
+            //return OBLOQ_STR_TYPE_IS_NONE
 
         if (!OBLOQ_SERIAL_INIT) {
             Obloq_serial_init()
         }
-        obloqWriteString("|3|1|http://" + OBLOQ_HTTP_IP + ":" + OBLOQ_HTTP_PORT + "/" + url + "|\r")
+        obloqWriteString("|3|1|" + url + "|\r")
 
-        return Obloq_http_wait_request(time)
+        //return Obloq_http_wait_request(time)
     }
 
     /**
